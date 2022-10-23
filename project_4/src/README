@@ -1,0 +1,43 @@
+Asymmetric Encryption using RSA algorithm
+
+The generated tool has two functions:
+    1) Generation of a public and a private key based on which the 
+plaintext/ciphertext is encrypted/decrypted.
+
+    2) Encryption or Decryption of a plaintext/ciphertext based on
+a key (public or private).
+
+The `Key Generation` works like that:
+    * First, we use the sieve_of_Eratosthenes, a function that 
+    generates prime numbers up until a limit (in our case 255).
+    * Then, we pick at random two of these values, using srand() and
+    rand() % size functions.
+    * We compute the product of the latter primes and the Euler's
+    totient function [ f(n) = (p - 1)(q - 1) ].
+    * Later we choose a number e so that e % f(n) != 0 and 
+    gcd(e, f(n)) == 1.
+    * We also choose a number d as the modular inversive of (e, f(n)).
+    * The public key consists of n and e, and the private one 
+    consists of n and d.
+
+You can call this function by typing in the command line ./assign_3 -g
+
+The Encryption is based on the following function:
+    c(m) = m ^ e mod n,
+where
+    m the letter to be encrypted,
+    c(m) the encrypted letter,
+    e the second part of the key and
+    n the first part of the key.
+The numbers e and m can get really large, whitch makes the operation 
+m^e really difficult to compute using pow (from math.h). So a new 
+function had to be implemented. That was pow_mod which computes the 
+encrypted/decrypted symbol, based on the arguments. That function
+squares the base m and directly modulates it by n until e/2 equals 0.
+
+In the same way, Decryption works as Encryption does, with the only 
+difference being that we use the modular inverse of e, d.
+
+Both functions are called in the command line by typing:
+    ./assign_3 -i <input filename> -o <output filename> 
+        -k <key filename> -e (for encryption) / -d (for decryption)
